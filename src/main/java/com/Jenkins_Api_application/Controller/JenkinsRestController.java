@@ -64,7 +64,7 @@ public class JenkinsRestController {
             e.printStackTrace();
         }
         
-        return "result";
+        return "created sucessfully";
     }
 
 }
