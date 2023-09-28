@@ -21,7 +21,8 @@ import com.Jenkins_Api_application.Service.JenkinsPipelineService;
 
 @RestController
 @RequestMapping("/api/jenkins")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:3000", "http://13.234.23.179:3001"})
+
 public class JenkinsRestController {
 	
 	
@@ -66,7 +67,7 @@ public class JenkinsRestController {
             e.printStackTrace();
         }
         
-        return "created sucessfully";
+        return "Pipeline created sucessfully with name :" +pipelineName;
     }
     
     @PostMapping("/triggerBuild")
