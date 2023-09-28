@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import com.Jenkins_Api_application.Service.JenkinsPipelineService;
 
 @RestController
 @RequestMapping("/api/jenkins")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class JenkinsRestController {
 	
 	
@@ -65,6 +67,22 @@ public class JenkinsRestController {
         }
         
         return "created sucessfully";
+    }
+    
+    @PostMapping("/triggerBuild")
+    public ResponseEntity<String> triggerBuild(@RequestParam String pipelineName) {
+        try {
+            boolean success = jenkinsPipelineService.triggerBuild(pipelineName);
+            
+            if (success) {
+                return new ResponseEntity<>("Build triggered successfully!", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Failed to trigger the build.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("An error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

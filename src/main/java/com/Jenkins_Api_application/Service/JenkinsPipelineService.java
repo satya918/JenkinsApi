@@ -140,4 +140,30 @@ public class JenkinsPipelineService {
 
         return Collections.emptyList();
     }
+    
+    public boolean triggerBuild(String pipelineName) throws URISyntaxException {
+        String apiUrl = jenkinsUrl + "/job/" + pipelineName + "/build";
+        URI uri = new URI(apiUrl);
+
+        HttpHeaders headers = new HttpHeaders();
+        String credentials = jenkinsUsername + ":" + jenkinsApiToken;
+        byte[] credentialsBytes = credentials.getBytes();
+        String credentialsBase64 = Base64.getEncoder().encodeToString(credentialsBytes);
+        headers.setBasicAuth(credentialsBase64);
+
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpMethod httpMethod = HttpMethod.POST;
+
+        RequestEntity<Void> requestEntity = new RequestEntity<>(
+                headers,
+                httpMethod,
+                uri
+        );
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
+
+        return responseEntity.getStatusCode().is2xxSuccessful();
+}
 }
