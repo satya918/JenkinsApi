@@ -21,7 +21,7 @@ import com.Jenkins_Api_application.Service.JenkinsPipelineService;
 
 @RestController
 @RequestMapping("/api/jenkins")
-@CrossOrigin(origins = {"http://localhost:3000", "http://13.234.23.179:3001"})
+@CrossOrigin(origins = "*")
 
 public class JenkinsRestController {
 	
